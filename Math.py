@@ -39,3 +39,44 @@ pointer = [
     [1, -0.5, 0.87]
 ]
 print(Multiplication(flag, pointer))
+def relu_activation(inputs):
+    output = []
+    for i in inputs:
+        if i>0:
+            output.append(i)
+        else:
+            output.append(0)
+    return output
+print(relu_activation([1, -2, 6, 8, -3]))
+
+
+def max(lst):
+    flag = lst[0]
+    for i in lst:
+        if i >= flag:
+            flag = i
+    return flag
+
+
+def custom_sum(lst):
+    total = 0
+    for i in lst:
+        total += i
+    return total
+
+
+def softmax_activation(inputs):
+    e = 2.71828182846
+    max_input = max(inputs)
+    exp_values = []
+
+    for i in inputs:
+        exp_values.append(e ** (i - max_input))
+    norm = []
+    total_exp_sum = custom_sum(exp_values)
+    for value in exp_values:
+        norm.append(value / total_exp_sum)
+    return norm
+
+
+print(sum(softmax_activation([1, -2, 6, 8, -3])))
