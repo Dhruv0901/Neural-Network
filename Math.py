@@ -1,3 +1,6 @@
+import math
+import numpy as np
+
 def transpose(lst2):
     x = 0
     main_lst = []
@@ -79,4 +82,30 @@ def softmax_activation(inputs):
     return norm
 
 
-print(sum(softmax_activation([1, -2, 6, 8, -3])))
+print(sum(softmax_activation([1, -2, 6, 8, -3])))# summation of all probabilites is 1 proving softmax activation's working
+
+output = [0.56, 0.4, 0.04]
+one_hot = [1, 0, 0]# can be interpreted as the output is index 0
+loss = -(math.log(output[0])*one_hot[0]+
+     math.log(output[1])*one_hot[1]+
+     math.log(output[2])*one_hot[2])
+print(loss)
+loss = -(math.log(output[0]))# given the target index is 0 the formula can be re-written
+print(loss)
+outputs = np.array([
+    [0.7, 0.1, 0.2],
+    [0.1, 0.5, 0.4],
+    [0.02, 0.9, 0.08]
+])
+class_targets = np.array([[1, 0, 0],
+                         [0, 1, 0],
+                         [0, 1, 0]])
+correct_confidences = np.sum(outputs*class_targets, axis=1)
+# This is done for processing data in batches where class_targets and outputs are multiplied and summed together along each row
+
+neg_log = -(np.log(correct_confidences))
+avg_loss = np.mean(neg_log)
+print(avg_loss)
+
+
+
