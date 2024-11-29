@@ -35,5 +35,7 @@ print(np.sum(activation2.output[1]))# sum of all probabilities is 1
 loss_function = Loss_CategoricalCrossentropy()
 loss = loss_function.calculate(activation2.output, y=y)
 print(loss)
-
+predictions = np.argmax(activation2.output, axis=1)
+accuracy = np.mean(predictions==y)
+print(accuracy)
 
