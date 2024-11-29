@@ -5,6 +5,6 @@ class Loss:
 
     def calculate(self, output, y):
 
-        sample_losses = self.forward(output)
+        sample_losses = self.forward(output, y)
         data_loss = np.mean(sample_losses)
         return data_loss
