@@ -1,4 +1,4 @@
-from nnfs.datasets import vertical_data
+from nnfs.datasets import spiral_data
 import matplotlib.pyplot as plt
 import numpy as np
 from Dense_Layer import Layer_Dense
@@ -6,7 +6,7 @@ from ReLU_Activation import Activation_ReLU
 from Softmax_Activation import Activation_Softmax
 from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
 
-X,y = vertical_data(samples=100, classes=3)
+X,y = spiral_data(samples=100, classes=3)
 
 dense1 = Layer_Dense(2, 3)
 activation1 = Activation_ReLU()
