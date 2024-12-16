@@ -14,3 +14,11 @@ class Loss_CategoricalCrossentropy(Loss):
             correct_confidences = np.sum(y_pred_clipped*y_true, axis=1)
         neg_log = -np.log(correct_confidences)
         return neg_log
+
+    def backward(self, dvalues, y_true):# vector of predicted values(dvalues) and ground-truth vector(y_true)
+        samples = len(dvalues)
+        labels = len(dvalues[0])# 3 in this case
+        if len(y_true.shape) == 1:# if ground vector is in form for eg)[1, 2, 0]
+            y_true = np.eye(labels)[y_true]
+        self.dinputs = -y_true / dvalues# derivative of loss function is -(ground-truth vector/predicted values)
+        self.dinputs = self.dinputs / samples# normalisation for scalling during optimisation
