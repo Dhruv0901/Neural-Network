@@ -27,7 +27,7 @@ class Optimiser_Adam:
 
         # calculates current momentum using the formula for Root Mean Square Propagation
         layer.weight_momentums = self.beta_1 * layer.weight_momentums + (1 - self.beta_1) * layer.dweights
-        layer.bias_momentums = self.beta_1 * layer.bias_momentums + (1 - self.beta_1) * layer.dweights
+        layer.bias_momentums = self.beta_1 * layer.bias_momentums + (1 - self.beta_1) * layer.dbiases
 
         # corrected momentum is momentum divided by value approaching 1
         # this is done by 1 - lim(step ->0/0) 0.9 ^ step
@@ -37,7 +37,7 @@ class Optimiser_Adam:
 
         # calculates cache just like RMSProp
         layer.weight_cache = self.beta_2 * layer.weight_cache + (1 - self.beta_2) * layer.dweights ** 2
-        layer.bias_cache = self.beta_2 * layer.bias_cache + (1 - self.bias_2) * layer.dbiases ** 2
+        layer.bias_cache = self.beta_2 * layer.bias_cache + (1 - self.beta_2) * layer.dbiases ** 2
 
         # correction just like momentum
         weight_cache_corrected = layer.weight_cache / (1 - self.beta_2 ** (self.iterations + 1))
