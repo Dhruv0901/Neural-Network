@@ -5,6 +5,7 @@ import numpy as np
 from Adam_Optimiser import Optimiser_Adam
 from CrossEntropyLoss_Softmax_Activtion import Activation_Softmax_Loss_CategoricalCrossEntropy
 from Dense_Layer import Layer_Dense
+from Neural_Network import loss_activation
 from ReLU_Activation import Activation_ReLU
 from Softmax_Activation import Activation_Softmax
 from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
@@ -28,7 +29,12 @@ for epoch in range(10001):
 
     dense2.forward(activation1.output)
 
-    loss = loss_function.forward(dense2.output, y)
+    data_loss = loss_function.forward(dense2.output, y)
+
+    regularisation_loss = (loss_function.loss.regularisation(dense1) +
+                           loss_function.loss.regularisation(dense2))
+
+    loss = data_loss + regularisation_loss
 
     predictions = np.argmax(loss_function.output, axis=1)
     if len(y.shape) == 2:
