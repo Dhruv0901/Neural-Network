@@ -20,6 +20,6 @@ class Loss:
         if layer.bias_regulariser_l1 > 0:
             regularisation_loss += layer.bias_regulariser_l1 * np.sum(np.abs(layer.weights))
         if layer.bias_regulariser_l2 > 0:
-            regularisation_loss += layer.bias_regulariser_l2 * np.sum(layer.bias * layer.bias)
+            regularisation_loss += layer.bias_regulariser_l2 * np.sum(layer.biases * layer.biases)
 
         return regularisation_loss

@@ -5,6 +5,8 @@ import numpy as np
 from Adam_Optimiser import Optimiser_Adam
 from CrossEntropyLoss_Softmax_Activtion import Activation_Softmax_Loss_CategoricalCrossEntropy
 from Dense_Layer import Layer_Dense
+from Dropout_Layer import Layer_Dropout
+from Math import dropout
 from Neural_Network import loss_activation
 from ReLU_Activation import Activation_ReLU
 from Softmax_Activation import Activation_Softmax
@@ -12,11 +14,10 @@ from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
 
 X,y = spiral_data(samples=100, classes=3)
 
-dense1 = Layer_Dense(2, 64)
+dense1 = Layer_Dense(2, 64, bias_regulariser_l2=5e-4)
 activation1 = Activation_ReLU()
+dropout1 = Layer_Dropout(0.05)
 dense2 = Layer_Dense(64, 3)
-activation2 = Activation_Softmax()
-
 loss_function = Activation_Softmax_Loss_CategoricalCrossEntropy()
 
 optimiser = Optimiser_Adam(learning_rate=0.05, decay=5e-7)
@@ -26,6 +27,8 @@ for epoch in range(10001):
     dense1.forward(X)
 
     activation1.forward(dense1.output)
+
+    dropout1.forward(activation1.output)
 
     dense2.forward(activation1.output)
 
@@ -50,6 +53,7 @@ for epoch in range(10001):
 
     loss_function.backward(loss_function.output, y)
     dense2.backward(loss_function.dinputs)
+    dropout1.backward(dense2.dinputs)
     activation1.backward(dense2.dinputs)
     dense1.backward(activation1.dinputs)
 

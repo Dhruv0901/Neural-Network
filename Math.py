@@ -1,4 +1,6 @@
 import math
+import random
+
 import numpy as np
 
 def transpose(lst2):
@@ -122,5 +124,25 @@ print(avg_loss)
 # layer1_output = np.dot(inputs, np.array(weights).T) + biases # np.dot performs a dot product between two vectors and then np allows vector addition
 # layer2_output = np.dot(layer1_output, np.array(weights2).T) + biases2
 
+# this is the foundational implementation of dropout layer where the output of certain nodes are switched-off
+# to help the model better understand the data instead of generalisation
+
+dropout_rate = 0.4
+output = [-0.69, -0.26,  0.2 , -0.35, -0.26, -0.93, -0.73,  0.16, -0.74, -0.8 ]
+
+while True:
+    index = random.randint(0, len(output) - 1)
+    output[index] = 0
+
+    dropout = 0
+    for i in output:
+        if i==0:
+            dropout+=1
+    if dropout / len(output) >= dropout_rate:
+        break
+
+print(output)
+
+print(np.random.binomial(1, 1-dropout_rate, 10))
 
 
