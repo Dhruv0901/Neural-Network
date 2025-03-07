@@ -4,7 +4,7 @@ from CrossEntropyLoss_Softmax_Activtion import Activation_Softmax_Loss_Categoric
 from Dense_Layer import Layer_Dense
 from ReLU_Activation import Activation_ReLU
 from Softmax_Activation import Activation_Softmax
-from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
+from CategoricalCrossentropy_Loss import Loss_CategoricalCrossentropy
 
 
 

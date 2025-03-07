@@ -10,7 +10,7 @@ from Math import dropout
 from Neural_Network import loss_activation
 from ReLU_Activation import Activation_ReLU
 from Softmax_Activation import Activation_Softmax
-from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
+from CategoricalCrossentropy_Loss import Loss_CategoricalCrossentropy
 
 X,y = spiral_data(samples=100, classes=3)
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
+from CategoricalCrossentropy_Loss import Loss_CategoricalCrossentropy
 from Softmax_Activation import Activation_Softmax
 
 
