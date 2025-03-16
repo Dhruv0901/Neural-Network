@@ -14,6 +14,7 @@ class Model:
     def finalise(self):# joins each layer amongst themselves like a linked list
 
         self.input_layer = Layer_Input()# initial layer points to itself thanks to input layer class
+        self.trainable_layers = []
 
         layer_count = len(self.layers)
 
@@ -31,6 +32,9 @@ class Model:
                 self.layers[i].prev = self.layers[i-1]
                 self.layers[i].next = self.loss# outermost layer points to loss
 
+            if hasattr(self.layers[i], "weights"):
+                self.trainable_layers.append(self.layers[i])
+
     def train(self, X, y, *, epochs=1, print_every=1):
 
         for epoch in range(1, epochs+1):
@@ -46,4 +50,4 @@ class Model:
         for layer in self.layers:# uses the layer's own method to forward input
             layer.forward(layer.prev.output)
 
-        return layer.output# returns the final output of the entire forward pass
+        return layer.output# returns the final output of the entire forward pass6
