@@ -54,6 +54,16 @@ class Model:
             loss = data_loss + regularisation_loss
             predictions = self.output_layer_activation.predictions(output)
             accuracy = self.accuracy.calculate(predictions, y)
+            self.optimiser.pre_update_params()
+            for layer in self.trainable_layers:
+                self.optimiser.update_params(layer)
+            self.optimiser.post_update()
+
+            if not epoch % print_every:
+                print(f'epoch: {epoch}', +
+                      f'acc: {accuracy}' +
+                      f'loss: {loss}' +
+                      f'lr: {self.optimiser.current_learning_rate}')
 
     def forward(self, X):
 
@@ -63,4 +73,12 @@ class Model:
             layer.forward(layer.prev.output)
 
         return layer.output# returns the final output of the entire forward pass
+
+    def backward(self, output, y):
+
+        self.loss.backward(output, y)
+
+        for layer in reversed(self.layers):# reverses our array of layers and reverts to gradients of previous layers
+            layer.backward(layer.next.dinputs)
+
 
