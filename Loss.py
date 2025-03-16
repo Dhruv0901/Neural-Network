@@ -1,6 +1,6 @@
 import numpy as np
 
-from Simulation import regularisation_loss
+
 
 
 class Loss:

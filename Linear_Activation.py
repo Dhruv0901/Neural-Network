@@ -2,10 +2,10 @@ class Activation_Linear:
 
     def forward(self, inputs):
         self.inputs = inputs
-        self.outputs = inputs
+        self.output = inputs
 
     def backward(self, dvalues):
-        self.dinput = dvalues.copy()
+        self.dinputs = dvalues.copy()
 
     def predictions(self, outputs):
         return outputs

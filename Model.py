@@ -1,14 +1,13 @@
-from caffe2.python.helpers.train import accuracy
+
 
 from Input_Layer import Layer_Input
-from Simulation import regularisation_loss
 
 
 class Model:
     def __init__(self):
         self.layers = []# this is our array of layers
 
-    def __add__(self, layer):
+    def add(self, layer):
         self.layers.append(layer)# appends layers in our main array
 
     def set(self,*,loss,optimiser,accuracy):
@@ -53,14 +52,16 @@ class Model:
             data_loss, regularisation_loss = self.loss.calculate(output, y)
             loss = data_loss + regularisation_loss
             predictions = self.output_layer_activation.predictions(output)
+
             accuracy = self.accuracy.calculate(predictions, y)
+            self.backward(output, y)
             self.optimiser.pre_update_params()
             for layer in self.trainable_layers:
                 self.optimiser.update_params(layer)
             self.optimiser.post_update()
 
             if not epoch % print_every:
-                print(f'epoch: {epoch}', +
+                print(f'epoch: {epoch}' +
                       f'acc: {accuracy}' +
                       f'loss: {loss}' +
                       f'lr: {self.optimiser.current_learning_rate}')
