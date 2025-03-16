@@ -17,3 +17,6 @@ class Activation_Softmax:
             # jacobian matrix is a matrix of all the vector of the multi-variable function
             self.dinputs[index] = np.dot(jacobian_matrix, single_dvalues)
             # dinputs is the array of gradients for each sample
+
+    def predictions(self, outputs):
+        return np.argmax(outputs, axis=1)

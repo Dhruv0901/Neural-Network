@@ -10,3 +10,6 @@ class Activation_ReLU:
     def backward(self, dvalues):
         self.dinputs = dvalues.copy()
         self.dinputs[self.inputs <= 0] = 0
+
+    def predictions(self, outputs):
+        return self.outputs

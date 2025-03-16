@@ -6,3 +6,6 @@ class Activation_Linear:
 
     def backward(self, dvalues):
         self.dinput = dvalues.copy()
+
+    def predictions(self, outputs):
+        return outputs
