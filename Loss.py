@@ -8,10 +8,14 @@ class Loss:
     def remember_trainable_layers(self, trainable_Layers):
         self.trainable_layers = trainable_Layers
 
-    def calculate(self, output, y):
+    def calculate(self, output, y, *, include_regularisation=False):
 
         sample_losses = self.forward(output, y)
         data_loss = np.mean(sample_losses)
+
+        if not include_regularisation:
+            return data_loss
+
         return data_loss, self.regularisation_trainLayer()
 
     def regularisation_trainLayer(self):

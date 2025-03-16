@@ -42,14 +42,14 @@ class Model:
 
         self.loss.remember_trainable_layers(self.trainable_layers)#initialises trainable layers
 
-    def train(self, X, y, *, epochs=1, print_every=1):
+    def train(self, X, y, *, epochs=1, print_every=1, validation_data=None):
 
         self.accuracy.init(y)
 
         for epoch in range(1, epochs+1):
 
             output = self.forward(X)
-            data_loss, regularisation_loss = self.loss.calculate(output, y)
+            data_loss, regularisation_loss = self.loss.calculate(output, y, include_regularisation=True)
             loss = data_loss + regularisation_loss
             predictions = self.output_layer_activation.predictions(output)
 
@@ -65,6 +65,16 @@ class Model:
                       f'acc: {accuracy}' +
                       f'loss: {loss}' +
                       f'lr: {self.optimiser.current_learning_rate}')
+        if validation_data is not None:
+
+            X_val, y_val = validation_data
+            output = self.forward(X_val)
+            loss = self.loss.calculate(output, y_val)
+            predictions = self.output_layer_activation.predictions(output)
+
+            print(f'validation: '+
+                  f'accuracy: {accuracy}'+
+                  f'loss: {loss}')
 
     def forward(self, X):
 
