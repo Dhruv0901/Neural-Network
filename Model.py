@@ -1,11 +1,13 @@
-
-
+from CategoricalCrossentropy_Loss import Loss_CategoricalCrossentropy
+from CrossEntropyLoss_Softmax_Activtion import Activation_Softmax_Loss_CategoricalCrossEntropy
 from Input_Layer import Layer_Input
+from Softmax_Activation import Activation_Softmax
 
 
 class Model:
     def __init__(self):
         self.layers = []# this is our array of layers
+        self.softmax_classifier_output = None
 
     def add(self, layer):
         self.layers.append(layer)# appends layers in our main array
@@ -42,13 +44,16 @@ class Model:
 
         self.loss.remember_trainable_layers(self.trainable_layers)#initialises trainable layers
 
+        if isinstance(self.layers[-1], Activation_Softmax) and isinstance(self.loss, Loss_CategoricalCrossentropy):
+            self.softmax_classifier_output = Activation_Softmax_Loss_CategoricalCrossEntropy()
+
     def train(self, X, y, *, epochs=1, print_every=1, validation_data=None):
 
         self.accuracy.init(y)
 
         for epoch in range(1, epochs+1):
 
-            output = self.forward(X)
+            output = self.forward(X, training=True)# if def train then it means we are training
             data_loss, regularisation_loss = self.loss.calculate(output, y, include_regularisation=True)
             loss = data_loss + regularisation_loss
             predictions = self.output_layer_activation.predictions(output)
@@ -68,24 +73,34 @@ class Model:
         if validation_data is not None:
 
             X_val, y_val = validation_data
-            output = self.forward(X_val)
+            output = self.forward(X_val, training=False)# we are not training since this is validation data
             loss = self.loss.calculate(output, y_val)
             predictions = self.output_layer_activation.predictions(output)
-
+            accuracy = self.accuracy.calculate(predictions, y_val)
             print(f'validation: '+
                   f'accuracy: {accuracy}'+
                   f'loss: {loss}')
 
-    def forward(self, X):
+    def forward(self, X, training):
 
-        self.input_layer.forward(X)# initialises the input aka the first layer
+        self.input_layer.forward(X, training)# initialises the input aka the first layer
+        # training sets the way for dropout layer
 
         for layer in self.layers:# uses the layer's own method to forward input
-            layer.forward(layer.prev.output)
+            layer.forward(layer.prev.output, training)
 
         return layer.output# returns the final output of the entire forward pass
 
     def backward(self, output, y):
+
+        if self.softmax_classifier_output is not None:
+            self.softmax_classifier_output.backward(output, y)
+
+            self.layers[-1].dinputs = self.softmax_classifier_output.dinputs
+        for layer in reversed(self.layers[:-1]):
+            layer.backward(layer.next.dinputs)
+
+        return
 
         self.loss.backward(output, y)
 
